@@ -1,0 +1,12 @@
+# Enviroment file
+.env
+.env.test
+
+# Node modules folder
+node_modules
+
+# Build folder
+dist
+
+# IDE files
+.idea
