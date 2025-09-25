@@ -13,6 +13,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum QRCodeStatus {
+  ACTIVE
+  EXPIRED
+}
+
 model User {
   id     Int    @id @default(autoincrement())
   userId String @unique @default(uuid())
@@ -21,6 +26,44 @@ model User {
   password String   @db.VarChar(255)
   firstName String  @db.VarChar(100)
 
+  qrCodeScans     QRCodeScan[]
+
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+}
+
+model QRCode {
+  id          Int      @id @default(autoincrement())
+  qrCodeId    String   @unique @default(uuid())
+  
+  secretValue String   @unique @db.VarChar(255)
+  validFrom   DateTime @default(now())
+  validUntil  DateTime
+  status      QRCodeStatus @default(ACTIVE)
+  
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  qrCodeScans       QRCodeScan[]
+  
+  @@index([status, validFrom, validUntil])
+}
+
+model QRCodeScan {
+  id         Int      @id @default(autoincrement())
+  scanId     String   @unique @default(uuid())
+  
+  qrCodeId   Int
+  qrCode     QRCode   @relation(fields: [qrCodeId], references: [id])
+
+  userId     Int
+  user       User     @relation(fields: [userId], references: [id])
+  
+  scannedValue String   @db.VarChar(255)
+  isValid    Boolean  @default(false)
+  
+  createdAt  DateTime @default(now())
+  
+  @@index([qrCodeId, createdAt])
+  @@index([userId, createdAt])
 }
