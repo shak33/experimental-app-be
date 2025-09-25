@@ -8,7 +8,7 @@ import { userRegistrationController } from '@/controllers/auth/userRegistration.
 import { userLoginController } from '@/controllers/auth/userLogin.controller';
 
 import { userRegistrationFormSchema } from '@/controllers/auth/models/userRegistration.validation';
-import { userLoginValidation } from '@/controllers/auth/models/userLogin.validation';
+import { userLoginFormSchema } from '@/controllers/auth/models/userLogin.validation';
 
 const router = express.Router();
 
@@ -19,7 +19,7 @@ router.post(
 );
 router.post(
   authRoutes.login,
-  requestValidationMiddleware(userLoginValidation),
+  requestValidationMiddleware(userLoginFormSchema),
   userLoginController
 );
 
