@@ -1,4 +1,4 @@
-import { Request, Response, NextFunction } from 'express';
+import { Response, NextFunction } from 'express';
 import bcrypt from 'bcrypt';
 import { createSecretToken } from '@/controllers/auth/utils/createSecretToken.util';
 import { prisma } from '@/db';
