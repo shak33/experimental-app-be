@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server.js",
   "scripts": {
-    "dev": "TS_NODE_PROJECT=tsconfig.development.json ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts --log-level debug",
+    "dev": "TS_NODE_PROJECT=tsconfig.json ts-node-dev --respawn --transpile-only -r tsconfig-paths/register src/server.ts --log-level debug",
     "build": "npx prisma generate && tsc -p tsconfig.production.json",
     "start": "node -r ts-node/register/transpile-only -r tsconfig-paths/register dist/server.js"
   },
