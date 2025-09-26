@@ -7,9 +7,14 @@ interface EmailOptions {
   email: string;
   subject: string;
   template: string;
-  data: {
+  data?: {
     [key: string]: string | number | object;
   };
+  attachments?: {
+    filename: string;
+    content: Buffer | string;
+    contentType?: string;
+  }[];
 }
 
 export const sendMail = async (options: EmailOptions): Promise<void> => {
@@ -26,7 +31,7 @@ export const sendMail = async (options: EmailOptions): Promise<void> => {
     },
   });
 
-  const { email, subject, template, data } = options;
+  const { email, subject, template, data = {} } = options;
   const templatePath = path.join(__dirname, '../mails', template);
   const html = await ejs.renderFile(templatePath, data);
 
@@ -35,6 +40,8 @@ export const sendMail = async (options: EmailOptions): Promise<void> => {
     to: email,
     subject,
     html,
+    data,
+    attachments: options.attachments,
   };
 
   try {

@@ -1,4 +1,5 @@
 import { app } from '@/app';
+import '@/jobs/';
 
 async function startServer() {
   const port = process.env.API_PORT || 8888;
