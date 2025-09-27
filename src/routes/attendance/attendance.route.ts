@@ -8,5 +8,6 @@ import { isAuthenticatedMiddleware } from '@/middlewares/isAuthenticated.middlew
 const router = express.Router();
 
 router.post(attendanceRoutes.checkIn, isAuthenticatedMiddleware, checkInController);
+router.get(attendanceRoutes.checkIn, isAuthenticatedMiddleware, checkInController);
 
 export default router;

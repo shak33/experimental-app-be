@@ -11,13 +11,17 @@ export const checkInController = async (
   try {
     const { id } = req.user;
     const { scannedValue } = req.body;
+    const startOfToday = new Date();
+    startOfToday.setHours(0, 0, 0, 0);
+    const endOfToday = new Date();
+    endOfToday.setHours(23, 59, 59, 999);
 
     const existingCheckIn = await prisma.attendance.findFirst({
       where: {
         userId: id,
         createdAt: {
-          gte: new Date(new Date().setHours(0, 0, 0, 0)),
-          lt: new Date(new Date().setHours(23, 59, 59, 999)),
+          gte: startOfToday,
+          lt: endOfToday,
         },
       },
     });
