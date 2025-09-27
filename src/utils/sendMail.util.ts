@@ -1,7 +1,9 @@
-require('dotenv').config();
+import dotenv from 'dotenv';
 import nodemailer from 'nodemailer';
 import ejs from 'ejs';
 import path from 'path';
+
+dotenv.config();
 
 interface EmailOptions {
   email: string;
@@ -18,7 +20,12 @@ interface EmailOptions {
 }
 
 export const sendMail = async (options: EmailOptions): Promise<void> => {
-  if (!process.env.SMTP_HOST || !process.env.SMTP_PORT || !process.env.SMTP_EMAIL || !process.env.SMTP_PASSWORD) {
+  if (
+    !process.env.SMTP_HOST ||
+    !process.env.SMTP_PORT ||
+    !process.env.SMTP_EMAIL ||
+    !process.env.SMTP_PASSWORD
+  ) {
     return Promise.reject(new Error('SMTP configuration is missing in environment variables'));
   }
 
