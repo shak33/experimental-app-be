@@ -5,11 +5,11 @@ import crypto from 'crypto';
 export const generateQRCode = async () => {
   try {
     const secretValue = crypto.randomBytes(32).toString('hex');
-    
+
     const validUntil = new Date();
     validUntil.setDate(validUntil.getDate() + 14);
 
-    await prisma.qRCode.create({
+    await prisma.attendanceQRCode.create({
       data: {
         secretValue,
         validUntil,
@@ -23,4 +23,4 @@ export const generateQRCode = async () => {
     console.error('Error generating QR Code:', error);
     throw error;
   }
-}
+};

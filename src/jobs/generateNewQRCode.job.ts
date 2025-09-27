@@ -8,7 +8,7 @@ cron.schedule('0 0 * * *', async () => {
   try {
     const now = new Date();
 
-    await prisma.qRCode.updateMany({
+    await prisma.attendanceQRCode.updateMany({
       where: {
         status: QRCodeStatus.ACTIVE,
         validUntil: { lt: now },
@@ -18,13 +18,13 @@ cron.schedule('0 0 * * *', async () => {
       },
     });
 
-    const lastQrCode = await prisma.qRCode.findFirst({
+    const lastAttendanceQRCode = await prisma.attendanceQRCode.findFirst({
       orderBy: {
         validUntil: 'desc',
       },
     });
 
-    if (!lastQrCode || lastQrCode.validUntil < now) {
+    if (!lastAttendanceQRCode || lastAttendanceQRCode.validUntil < now) {
       const qrCodeImageBuffer = await generateQRCode();
 
       if (!process.env.EMAIL_ADDRESS_TO_SEND_QR_CODES) {
@@ -34,11 +34,11 @@ cron.schedule('0 0 * * *', async () => {
 
       await sendMail({
         email: process.env.EMAIL_ADDRESS_TO_SEND_QR_CODES,
-        subject: 'AMS | This is your new QR Code',
-        template: 'qrCodes/new-qr-code.mail.ejs',
+        subject: 'AMS | This is your new Attendance QR Code',
+        template: 'qrCodes/new-attendance-qr-code.mail.ejs',
         attachments: [
           {
-            filename: 'qrcode.png',
+            filename: 'attendance-qrcode.png',
             content: qrCodeImageBuffer,
             contentType: 'image/png',
           },
